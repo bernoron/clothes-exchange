@@ -9,8 +9,9 @@ import itemRoutes from './routes/items';
 import sellerRoutes from './routes/sellers';
 import adminRouter from './routes/admin';
 
+export const app = express();
+
 export async function createServer() {
-  const app = express();
 
   // Middleware
   app.use(cors({
