@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
+import rateLimit from 'express-rate-limit';
 
 // Import routes
 import authRoutes from './routes/auth';
@@ -22,6 +23,17 @@ export async function createServer() {
   }));
   app.use(express.json());
   app.use(morgan('dev'));
+
+  // Rate limiting configuration
+  const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5, // limit each IP to 5 requests per windowMs
+    message: 'Too many requests from this IP, please try again after 15 minutes'
+  });
+
+  // Apply rate limiting to auth routes
+  app.use('/api/auth/login', authLimiter);
+  app.use('/api/auth/register', authLimiter);
 
   // Routes
   app.use('/api/auth', authRoutes);

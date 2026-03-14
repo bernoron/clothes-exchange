@@ -1,0 +1,154 @@
+Deployment Guide - Kinderkleiderbörse
+
+Prerequisites:
+1. Domain names for each application:
+   - Main site (e.g., kinderkleiderboerse.de)
+   - Admin panel (e.g., admin.kinderkleiderboerse.de)
+   - Checkout (e.g., checkout.kinderkleiderboerse.de)
+
+2. Required Accounts:
+   - Vercel account (for hosting)
+   - AWS account (for S3 and other services)
+   - PostgreSQL database provider (e.g., Supabase, Railway, or AWS RDS)
+   - Redis provider (e.g., Upstash or Redis Cloud)
+   - Stripe account for payments
+
+Deployment Steps:
+
+1. Environment Setup:
+   a. Create .env files for each application with the following variables:
+      - DATABASE_URL
+      - REDIS_URL
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_REGION
+      - S3_BUCKET_NAME
+      - STRIPE_SECRET_KEY
+      - STRIPE_WEBHOOK_SECRET
+      - NEXTAUTH_SECRET
+      - NEXTAUTH_URL
+      - SMTP_HOST
+      - SMTP_PORT
+      - SMTP_USER
+      - SMTP_PASSWORD
+
+2. Database Setup:
+   a. Create PostgreSQL database
+   b. Run Prisma migrations:
+      ```bash
+      npx prisma migrate deploy
+      ```
+   c. Seed initial data if needed:
+      ```bash
+      npx prisma db seed
+      ```
+
+3. Vercel Deployment:
+   a. Install Vercel CLI:
+      ```bash
+      npm i -g vercel
+      ```
+   b. Login to Vercel:
+      ```bash
+      vercel login
+      ```
+   c. Deploy each application:
+      ```bash
+      # User Frontend
+      cd user-frontend
+      vercel deploy --prod
+
+      # Admin Frontend
+      cd admin-frontend
+      vercel deploy --prod
+
+      # Checkout App
+      cd checkout-app
+      vercel deploy --prod
+      ```
+
+4. Domain Configuration:
+   a. Add domains in Vercel dashboard
+   b. Configure DNS records:
+      - Add A records pointing to Vercel
+      - Add CNAME records for subdomains
+   c. Enable SSL certificates (automatic with Vercel)
+
+5. AWS S3 Setup:
+   a. Create S3 bucket
+   b. Configure CORS settings
+   c. Set up bucket policies
+   d. Configure image optimization settings
+
+6. Redis Setup:
+   a. Create Redis instance
+   b. Configure connection settings
+   c. Set up caching rules
+
+7. Stripe Integration:
+   a. Configure webhook endpoints
+   b. Set up payment methods
+   c. Test payment flows
+   d. Configure webhook secrets
+
+8. Monitoring Setup:
+   a. Configure Vercel Analytics
+   b. Set up error tracking (e.g., Sentry)
+   c. Configure logging service
+   d. Set up performance monitoring
+
+9. Security Measures:
+   a. Enable HTTPS (automatic with Vercel)
+   b. Configure security headers
+   c. Set up rate limiting
+   d. Enable CSRF protection
+   e. Configure CORS policies
+
+10. Post-Deployment Checklist:
+    a. Verify all environment variables
+    b. Test all authentication flows
+    c. Verify payment processing
+    d. Check image uploads
+    e. Test email notifications
+    f. Verify database connections
+    g. Check Redis caching
+    h. Test all API endpoints
+    i. Verify SSL certificates
+    j. Check mobile responsiveness
+
+11. Backup Strategy:
+    a. Set up database backups
+    b. Configure S3 bucket versioning
+    c. Set up automated backup schedules
+    d. Test backup restoration
+
+12. Maintenance:
+    a. Set up monitoring alerts
+    b. Configure error notifications
+    c. Set up performance monitoring
+    d. Create maintenance schedule
+
+Important Notes:
+1. Always deploy to staging environment first
+2. Keep all dependencies updated
+3. Monitor application logs regularly
+4. Set up automated testing in CI/CD pipeline
+5. Regular security audits
+6. Keep backup of all environment variables
+7. Document all deployment changes
+
+Troubleshooting:
+1. Check Vercel deployment logs
+2. Verify environment variables
+3. Check database connections
+4. Monitor error tracking
+5. Check SSL certificate status
+6. Verify DNS propagation
+7. Test all external service connections
+
+For detailed information about each step, refer to the respective service documentation:
+- Vercel: https://vercel.com/docs
+- AWS: https://aws.amazon.com/documentation/
+- Stripe: https://stripe.com/docs
+- PostgreSQL: https://www.postgresql.org/docs/
+- Redis: https://redis.io/documentation 

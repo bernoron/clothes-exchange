@@ -15,7 +15,11 @@ export const auth = async (req: AuthRequest, res: Response, next: NextFunction) 
       throw new Error();
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key') as { userId?: string, _id?: string, isAdmin: boolean };
+    if (!process.env.JWT_SECRET) {
+      throw new Error('JWT_SECRET environment variable is not set');
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET) as { userId?: string, _id?: string, isAdmin: boolean };
     const userId = decoded.userId || decoded._id;
     
     if (!userId) {

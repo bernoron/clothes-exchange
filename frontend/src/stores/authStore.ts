@@ -1,68 +1,74 @@
 import { create } from 'zustand';
-import api from '../utils/axios';
+import api from '../utils/api';
 
-export interface User {
-  _id: string;
-  name: string;
+interface User {
+  id: string;
   email: string;
-  sellerNumber?: string;
-  street?: string;
-  city?: string;
-  iban?: string;
-  isAdmin?: boolean;
-  role?: 'admin' | 'staff' | 'user';
+  name?: string;
+  isAdmin: boolean;
 }
 
 interface AuthState {
   user: User | null;
   token: string | null;
-  isAuthenticated: boolean;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
-  logout: () => void;
+  error: string | null;
   loadUser: () => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
+  register: (email: string, password: string, name: string) => Promise<void>;
+  logout: () => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
+const useAuthStore = create<AuthState>((set) => ({
   user: null,
   token: localStorage.getItem('token'),
-  isAuthenticated: !!localStorage.getItem('token'),
   isLoading: false,
+  error: null,
 
   loadUser: async () => {
     try {
-      set({ isLoading: true });
-      const response = await api.get('/api/auth/me');
+      set({ isLoading: true, error: null });
+      const response = await api.get('/auth/me');
       set({ user: response.data, isLoading: false });
     } catch (error) {
-      localStorage.removeItem('token');
-      set({ user: null, token: null, isAuthenticated: false, isLoading: false });
+      set({ error: 'Failed to load user', isLoading: false });
     }
   },
 
   login: async (email: string, password: string) => {
     try {
-      const response = await api.post('/api/auth/login', { email, password });
-      const { user, token } = response.data;
-      
+      set({ isLoading: true, error: null });
+      const response = await api.post('/auth/login', { email, password });
+      const { token, user } = response.data;
       localStorage.setItem('token', token);
-      set({ user, token, isAuthenticated: true });
-    } catch (error) {
-      throw error;
+      set({ user, token, isLoading: false });
+    } catch (error: any) {
+      set({ 
+        error: error.response?.data?.message || 'Login failed', 
+        isLoading: false 
+      });
     }
   },
 
-  register: async (name: string, email: string, password: string) => {
+  register: async (email: string, password: string, name: string) => {
     try {
-      await api.post('/api/auth/register', { name, email, password });
-    } catch (error) {
-      throw error;
+      set({ isLoading: true, error: null });
+      const response = await api.post('/auth/register', { email, password, name });
+      const { token, user } = response.data;
+      localStorage.setItem('token', token);
+      set({ user, token, isLoading: false });
+    } catch (error: any) {
+      set({ 
+        error: error.response?.data?.message || 'Registration failed', 
+        isLoading: false 
+      });
     }
   },
 
   logout: () => {
     localStorage.removeItem('token');
-    set({ user: null, token: null, isAuthenticated: false });
+    set({ user: null, token: null });
   },
-})); 
+}));
+
+export default useAuthStore; 

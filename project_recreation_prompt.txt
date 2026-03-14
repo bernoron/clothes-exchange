@@ -1,0 +1,111 @@
+Create a full-stack e-commerce platform for a children's clothing marketplace (Kinderkleiderbörse) with the following specifications:
+
+Project Structure:
+1. Create three separate Next.js applications:
+   - User Frontend (public-facing website)
+   - Admin Frontend (management interface)
+   - Checkout App (dedicated checkout flow)
+
+Technical Requirements:
+1. Frontend (All three apps):
+   - Next.js 14+ with App Router
+   - TypeScript
+   - Tailwind CSS for styling
+   - React Query for data fetching
+   - Zustand for state management
+   - NextAuth.js for authentication
+   - Responsive design with mobile-first approach
+   - Dark/Light mode support
+
+2. Backend:
+   - Next.js API routes
+   - Prisma as ORM
+   - PostgreSQL database
+   - Redis for caching
+   - JWT for authentication
+   - Stripe for payment processing
+   - AWS S3 for image storage
+
+3. User Frontend Features:
+   - Homepage with featured products
+   - Product catalog with filtering and search
+   - Product detail pages
+   - Shopping cart functionality
+   - User authentication (login/register)
+   - User profile management
+   - Order history
+   - Wishlist functionality
+   - Responsive navigation
+   - Multi-language support (German/English)
+
+4. Admin Frontend Features:
+   - Secure admin authentication
+   - Dashboard with key metrics
+   - Product management (CRUD)
+   - Order management
+   - User management
+   - Inventory tracking
+   - Sales analytics
+   - Content management
+   - Bulk operations
+   - Export functionality
+
+5. Checkout App Features:
+   - Streamlined checkout process
+   - Multiple payment methods
+   - Address management
+   - Order summary
+   - Email notifications
+   - Order tracking
+   - Secure payment processing
+
+6. Security Requirements:
+   - HTTPS everywhere
+   - CSRF protection
+   - Rate limiting
+   - Input validation
+   - XSS protection
+   - SQL injection prevention
+   - Secure password hashing
+   - Regular security audits
+
+7. Performance Requirements:
+   - Server-side rendering
+   - Image optimization
+   - Code splitting
+   - Lazy loading
+   - Caching strategies
+   - CDN integration
+   - Performance monitoring
+
+8. Development Setup:
+   - Docker configuration
+   - Development environment
+   - Testing environment
+   - CI/CD pipeline
+   - Code quality tools
+   - Documentation
+   - Git workflow
+
+9. Deployment:
+   - Production environment setup
+   - Monitoring and logging
+   - Backup strategy
+   - Error tracking
+   - Performance monitoring
+   - SSL certificates
+   - Domain configuration
+
+10. Additional Features:
+    - SEO optimization
+    - Social media integration
+    - Newsletter subscription
+    - Product reviews
+    - Related products
+    - Size guide
+    - Return policy
+    - FAQ section
+    - Contact form
+    - Live chat support
+
+Please implement this project with best practices, clean code, and proper documentation. Include setup instructions, deployment guides, and maintenance documentation. Ensure the application is scalable, maintainable, and follows modern web development standards. 

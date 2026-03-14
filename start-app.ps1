@@ -88,8 +88,16 @@ if (-not $adminFrontendStarted) {
     exit 1
 }
 
+# Start Checkout App
+$checkoutAppStarted = Start-Component -name "Checkout App" -directory "checkout-app" -command "npm run dev"
+if (-not $checkoutAppStarted) {
+    Write-Host "Failed to start Checkout App. Please check the checkout-app directory and try again." -ForegroundColor Red
+    exit 1
+}
+
 Write-Host "`nAll components started!" -ForegroundColor Green
 Write-Host "Frontend: http://localhost:5173" -ForegroundColor Cyan
 Write-Host "Admin Frontend: http://localhost:5174" -ForegroundColor Cyan
+Write-Host "Checkout App: http://localhost:5175" -ForegroundColor Cyan
 Write-Host "Backend API: http://localhost:3001" -ForegroundColor Cyan
 Write-Host "`nTo stop all components, run: .\stop-app.ps1" -ForegroundColor Yellow 

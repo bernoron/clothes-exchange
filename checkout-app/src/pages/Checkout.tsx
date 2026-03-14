@@ -130,20 +130,20 @@ const Checkout: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">{t('checkout.title')}</h1>
+      <h1 className="text-3xl font-bold text-gray-900 mb-8">Kasse</h1>
 
-      <div className="mb-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <div className="mb-8 bg-white p-6 rounded-lg shadow">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t('checkout.sellerId')}
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Verkäufer
             </label>
             <select
               value={selectedSeller}
               onChange={(e) => setSelectedSeller(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
             >
-              <option value="">{t('checkout.selectSeller')}</option>
+              <option value="">Verkäufer auswählen</option>
               {sellers.map(seller => (
                 <option key={seller.id} value={seller.id}>
                   {seller.name} ({seller.sellerNumber})
@@ -153,16 +153,16 @@ const Checkout: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t('checkout.itemNumber')}
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Artikel
             </label>
             <select
               value={selectedItem}
               onChange={(e) => setSelectedItem(e.target.value)}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
               disabled={!selectedSeller}
             >
-              <option value="">{t('checkout.selectItem')}</option>
+              <option value="">Artikel auswählen</option>
               {availableItems.map(item => (
                 <option key={item.id} value={item.id}>
                   {item.itemNumber} - {item.title} ({item.price.toFixed(2)}€)
@@ -175,48 +175,57 @@ const Checkout: React.FC = () => {
         <button
           onClick={handleAddToCart}
           disabled={isLoading || !selectedSeller || !selectedItem}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:bg-gray-400"
+          className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
-          {t('common.add')}
+          Zum Warenkorb hinzufügen
         </button>
       </div>
 
       {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-          {error}
+        <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <p className="text-sm text-red-700">{error}</p>
+            </div>
+          </div>
         </div>
       )}
 
       {cart.length > 0 && (
-        <div className="mt-8">
-          <h2 className="text-xl font-semibold mb-4">{t('checkout.cart')}</h2>
+        <div className="mt-8 bg-white p-6 rounded-lg shadow">
+          <h2 className="text-xl font-semibold text-gray-900 mb-6">Warenkorb</h2>
           <div className="space-y-4">
             {cart.map((item, index) => (
-              <div key={index} className="flex justify-between items-center bg-gray-50 p-4 rounded">
+              <div key={index} className="flex justify-between items-center bg-gray-50 p-4 rounded-md">
                 <div>
-                  <p className="font-medium">{item.title}</p>
-                  <p className="text-sm text-gray-600">{t('checkout.itemNumber')}: {item.itemNumber}</p>
+                  <p className="font-medium text-gray-900">{item.title}</p>
+                  <p className="text-sm text-gray-600">Artikelnummer: {item.itemNumber}</p>
                 </div>
                 <div className="flex items-center space-x-4">
-                  <p className="font-medium">{item.price.toFixed(2)}€</p>
+                  <p className="font-medium text-gray-900">{item.price.toFixed(2)}€</p>
                   <button
                     onClick={() => handleRemoveFromCart(item.itemId)}
-                    className="text-red-600 hover:text-red-800"
+                    className="text-red-600 hover:text-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                   >
-                    {t('common.delete')}
+                    Entfernen
                   </button>
                 </div>
               </div>
             ))}
-            <div className="flex justify-between items-center mt-4">
-              <div className="font-bold">
-                {t('checkout.total')}: {total.toFixed(2)}€
+            <div className="flex justify-between items-center mt-6 pt-4 border-t border-gray-200">
+              <div className="text-lg font-bold text-gray-900">
+                Gesamt: {total.toFixed(2)}€
               </div>
               <button
                 onClick={handleCheckout}
-                className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700"
+                className="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
               >
-                {t('checkout.completeSale')}
+                Kauf abschließen
               </button>
             </div>
           </div>
@@ -224,28 +233,28 @@ const Checkout: React.FC = () => {
       )}
 
       {success && (
-        <div className="mt-6 p-6 bg-white rounded-lg shadow-lg">
+        <div className="mt-8 bg-white p-6 rounded-lg shadow">
           <div className="text-center mb-6">
             <h2 className="text-2xl font-bold text-green-800 mb-2">{success}</h2>
             <p className="text-gray-600">{new Date().toLocaleDateString('de-DE')}</p>
           </div>
 
           <div className="mb-6">
-            <h3 className="text-lg font-semibold mb-4">{t('checkout.receipt')}</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Kaufbeleg</h3>
             <div className="space-y-3">
               {soldItems.map((item, index) => (
                 <div key={index} className="flex justify-between items-center border-b pb-2">
                   <div>
-                    <p className="font-medium">{item.title}</p>
+                    <p className="font-medium text-gray-900">{item.title}</p>
                     <p className="text-sm text-gray-600">
-                      {t('checkout.itemNumber')}: {item.itemNumber} | {t('checkout.seller')}: {item.sellerName}
+                      Artikelnummer: {item.itemNumber} | Verkäufer: {item.sellerName}
                     </p>
                   </div>
-                  <p className="font-medium">{item.price.toFixed(2)}€</p>
+                  <p className="font-medium text-gray-900">{item.price.toFixed(2)}€</p>
                 </div>
               ))}
-              <div className="flex justify-between items-center pt-2 font-bold">
-                <p>{t('checkout.total')}</p>
+              <div className="flex justify-between items-center pt-2 font-bold text-gray-900">
+                <p>Gesamt</p>
                 <p>{soldItems.reduce((sum, item) => sum + item.price, 0).toFixed(2)}€</p>
               </div>
             </div>
@@ -255,12 +264,9 @@ const Checkout: React.FC = () => {
             <div className="text-center">
               <button
                 onClick={handleDownloadReceipt}
-                className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-                {t('checkout.downloadReceipt')}
+                Beleg herunterladen
               </button>
             </div>
           )}
